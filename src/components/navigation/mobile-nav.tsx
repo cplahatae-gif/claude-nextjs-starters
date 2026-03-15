@@ -5,10 +5,7 @@ import { usePathname } from 'next/navigation'
 import { cn } from '@/lib/utils'
 import { Separator } from '@/components/ui/separator'
 
-const navItems = [
-  { title: '홈', href: '/' },
-  { title: '로그인', href: '/login' },
-]
+const navItems = [{ title: '홈', href: '/' }]
 
 interface MobileNavProps {
   onClose: () => void
@@ -29,7 +26,7 @@ export function MobileNav({ onClose }: MobileNavProps) {
               href={item.href}
               onClick={onClose}
               className={cn(
-                'hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground block rounded-md px-2 py-1.5 text-sm leading-none font-medium no-underline transition-colors outline-none select-none',
+                'hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground block select-none rounded-md px-2 py-1.5 text-sm font-medium leading-none no-underline outline-none transition-colors',
                 pathname === item.href ? 'bg-accent text-accent-foreground' : ''
               )}
             >

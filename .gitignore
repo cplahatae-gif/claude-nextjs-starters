@@ -39,3 +39,9 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# 개인/로컬 설정
+mcp-shrimp-task-manager/
+skills-lock.json
+.claude/settings.local.json
+.claude/hooks/

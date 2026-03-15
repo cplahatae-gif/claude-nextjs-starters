@@ -76,10 +76,17 @@ npm run dev
 
 ### 필수 설정
 
-1. `setup.sh` 실행 (아래 참조) 또는 수동으로:
-   - `npm install`
-   - `.env.example` → `.env` 복사 후 환경변수 편집
-2. `package.json`의 `name` 필드를 프로젝트명으로 변경
+`setup.sh` 실행 한 번으로 아래 항목이 자동 완료됩니다:
+
+| 항목                    | 내용                                       |
+| ----------------------- | ------------------------------------------ |
+| `.env` 생성             | `.env.example` 기반 복사 또는 빈 파일 생성 |
+| `package.json` name     | 현재 폴더명으로 자동 변경                  |
+| `layout.tsx` 메타데이터 | 프로젝트 제목/설명 대화형 입력             |
+| `settings.local.json`   | MCP 권한 및 에이전트 팀 설정 자동 생성     |
+| shrimp-task-manager     | `DATA_DIR` 절대경로 자동 설정              |
+
+실행 후 `.env` 파일에 필요한 환경변수를 직접 채워넣으면 됩니다.
 
 ### setup.sh 실행 방법
 
@@ -90,35 +97,13 @@ npm run dev
 
 > Git Bash가 없다면 [git-scm.com](https://git-scm.com)에서 Git을 설치하면 포함됩니다.
 
-### Claude Code 설정 (선택)
+### Claude Code 설정
 
-1. `.claude/settings.local.json` 생성 (`.gitignore`에 포함된 개인 설정 파일)
-   ```json
-   {
-     "permissions": {
-       "allow": [
-         "Read",
-         "Bash",
-         "mcp__shadcn",
-         "mcp__playwright",
-         "mcp__sequential-thinking",
-         "mcp__context7__resolve-library-id",
-         "mcp__context7__query-docs"
-       ],
-       "deny": [],
-       "ask": []
-     },
-     "enableAllProjectMcpServers": true,
-     "env": {
-       "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1"
-     }
-   }
-   ```
-2. MCP 서버 활성화 확인 (`.mcp.json` 참조)
-3. (선택) shrimp-task-manager `DATA_DIR` 경로 설정
-4. (선택) 에이전트 팀 기능: `CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1` 환경변수 설정
+`setup.sh`가 자동으로 `.claude/settings.local.json`을 생성하며 아래 설정이 포함됩니다:
 
-> `setup.sh`를 실행하면 `.env`, `.claude/settings.local.json`, `layout.tsx` 메타데이터가 자동 설정됩니다.
+- **MCP 서버 전체 활성화**: `enableAllProjectMcpServers: true`
+- **에이전트 팀 활성화**: `CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1`
+- **자동 허용 권한**: shadcn, playwright, sequential-thinking, context7, shrimp-task-manager
 
 ## 프로젝트 구조
 

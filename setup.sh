@@ -8,9 +8,10 @@ PROJECT_NAME=$(basename "$PWD")
 if [ ! -f .env ]; then
   if [ -f .env.example ]; then
     cp .env.example .env
-    echo "✅ .env 파일이 생성되었습니다."
+    echo "✅ .env 파일이 생성되었습니다. (.env.example 기반)"
   else
-    echo "⚠️  .env.example 파일이 없습니다. .env 파일을 수동으로 생성하세요."
+    touch .env
+    echo "✅ .env 파일이 생성되었습니다. (빈 파일)"
   fi
 else
   echo "ℹ️  .env 파일이 이미 존재합니다."
@@ -28,7 +29,8 @@ if [ ! -f .claude/settings.local.json ]; then
       "mcp__playwright",
       "mcp__sequential-thinking",
       "mcp__context7__resolve-library-id",
-      "mcp__context7__query-docs"
+      "mcp__context7__query-docs",
+      "mcp__shrimp-task-manager"
     ],
     "deny": [],
     "ask": []
@@ -44,13 +46,27 @@ else
   echo "ℹ️  Claude Code 로컬 설정이 이미 존재합니다."
 fi
 
-# 3. package.json name을 폴더명으로 자동 변경
+# 3. .mcp.json shrimp-task-manager DATA_DIR 절대경로 설정
+if [ -f .mcp.json ]; then
+  node -e "
+const fs = require('fs');
+const path = require('path');
+const mcp = JSON.parse(fs.readFileSync('.mcp.json', 'utf8'));
+if (mcp.mcpServers && mcp.mcpServers['shrimp-task-manager']) {
+  mcp.mcpServers['shrimp-task-manager'].env.DATA_DIR = path.resolve('shrimp_data');
+  fs.writeFileSync('.mcp.json', JSON.stringify(mcp, null, 2) + '\n');
+}
+"
+  echo "✅ shrimp-task-manager DATA_DIR이 절대경로로 설정되었습니다."
+fi
+
+# 4. package.json name을 폴더명으로 자동 변경
 if [ -f package.json ]; then
   sed -i "s/\"name\": \".*\"/\"name\": \"$PROJECT_NAME\"/" package.json
   echo "✅ package.json name이 '$PROJECT_NAME'으로 설정되었습니다."
 fi
 
-# 4. 프로젝트 메타데이터 입력
+# 5. 프로젝트 메타데이터 입력
 echo ""
 read -p "📝 프로젝트 제목을 입력하세요 (Enter로 기본값 사용: '$PROJECT_NAME'): " PROJECT_TITLE
 PROJECT_TITLE=${PROJECT_TITLE:-$PROJECT_NAME}
@@ -74,12 +90,12 @@ fs.writeFileSync('src/app/layout.tsx', updated);
   echo "✅ layout.tsx 메타데이터가 설정되었습니다. (제목: $PROJECT_TITLE)"
 fi
 
-# 5. 의존성 설치
+# 6. 의존성 설치
 echo ""
 npm install
 echo "✅ 의존성 설치가 완료되었습니다."
 
-# 6. 추가 설정 안내
+# 7. 추가 설정 안내
 echo ""
 echo "📝 추가 설정:"
 echo "  1. .env 파일을 편집하세요"

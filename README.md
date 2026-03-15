@@ -80,7 +80,6 @@ npm run dev
    - `npm install`
    - `.env.example` → `.env` 복사 후 환경변수 편집
 2. `package.json`의 `name` 필드를 프로젝트명으로 변경
-3. `src/app/layout.tsx`의 메타데이터 수정
 
 ### setup.sh 실행 방법
 
@@ -119,7 +118,7 @@ npm run dev
 3. (선택) shrimp-task-manager `DATA_DIR` 경로 설정
 4. (선택) 에이전트 팀 기능: `CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1` 환경변수 설정
 
-> `setup.sh`를 실행하면 `.env`와 `.claude/settings.local.json`이 자동 생성됩니다.
+> `setup.sh`를 실행하면 `.env`, `.claude/settings.local.json`, `layout.tsx` 메타데이터가 자동 설정됩니다.
 
 ## 프로젝트 구조
 

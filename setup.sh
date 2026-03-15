@@ -50,14 +50,38 @@ if [ -f package.json ]; then
   echo "✅ package.json name이 '$PROJECT_NAME'으로 설정되었습니다."
 fi
 
-# 4. 의존성 설치
+# 4. 프로젝트 메타데이터 입력
+echo ""
+read -p "📝 프로젝트 제목을 입력하세요 (Enter로 기본값 사용: '$PROJECT_NAME'): " PROJECT_TITLE
+PROJECT_TITLE=${PROJECT_TITLE:-$PROJECT_NAME}
+
+read -p "📝 프로젝트 설명을 입력하세요 (Enter로 기본값 사용: '$PROJECT_NAME 웹 애플리케이션'): " PROJECT_DESC
+PROJECT_DESC=${PROJECT_DESC:-"$PROJECT_NAME 웹 애플리케이션"}
+
+# layout.tsx metadata 블록 교체 (node.js 사용으로 멀티라인 안전 처리)
+if [ -f src/app/layout.tsx ]; then
+  PROJECT_TITLE="$PROJECT_TITLE" PROJECT_DESC="$PROJECT_DESC" node -e "
+const fs = require('fs');
+const title = process.env.PROJECT_TITLE;
+const desc = process.env.PROJECT_DESC;
+const content = fs.readFileSync('src/app/layout.tsx', 'utf8');
+const updated = content.replace(
+  /export const metadata: Metadata = \{[\s\S]*?\}/,
+  'export const metadata: Metadata = {\n  title: \'' + title + '\',\n  description: \'' + desc + '\',\n}'
+);
+fs.writeFileSync('src/app/layout.tsx', updated);
+"
+  echo "✅ layout.tsx 메타데이터가 설정되었습니다. (제목: $PROJECT_TITLE)"
+fi
+
+# 5. 의존성 설치
+echo ""
 npm install
 echo "✅ 의존성 설치가 완료되었습니다."
 
-# 5. 추가 설정 안내
+# 6. 추가 설정 안내
 echo ""
 echo "📝 추가 설정:"
-echo "  1. src/app/layout.tsx의 메타데이터를 수정하세요"
-echo "  2. .env 파일을 편집하세요"
+echo "  1. .env 파일을 편집하세요"
 echo ""
 echo "🎉 설정 완료! npm run dev로 개발을 시작하세요."

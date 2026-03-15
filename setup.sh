@@ -3,8 +3,12 @@ echo "🚀 Next.js 스타터킷 초기 설정을 시작합니다..."
 
 # 1. .env 파일 생성
 if [ ! -f .env ]; then
-  cp .env.example .env
-  echo "✅ .env 파일이 생성되었습니다."
+  if [ -f .env.example ]; then
+    cp .env.example .env
+    echo "✅ .env 파일이 생성되었습니다."
+  else
+    echo "⚠️  .env.example 파일이 없습니다. .env 파일을 수동으로 생성하세요."
+  fi
 else
   echo "ℹ️  .env 파일이 이미 존재합니다."
 fi

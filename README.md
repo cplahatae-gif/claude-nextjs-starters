@@ -105,6 +105,28 @@ npm run dev
 - **에이전트 팀 활성화**: `CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1`
 - **자동 허용 권한**: shadcn, playwright, sequential-thinking, context7, shrimp-task-manager
 
+### 프로젝트 초기화 (starter-cleaner)
+
+`setup.sh` 실행 후 Claude Code에서 `starter-cleaner` 에이전트를 호출하여 보일러플레이트를 정리합니다:
+
+```bash
+claude --dangerously-skip-permissions
+```
+
+Claude Code 프롬프트에서:
+
+```
+starter-cleaner 에이전트를 사용하여 [프로젝트명] 프로젝트를 초기화해줘
+```
+
+starter-cleaner가 수행하는 작업:
+
+- 데모 페이지 및 샘플 콘텐츠 제거
+- `page.tsx`를 빈 페이지로 리셋
+- 사용하지 않는 컴포넌트 정리
+- PRD 기반 README 재작성 (`docs/PRD.md` 존재 시)
+- `npm run dev` 실행 확인
+
 ## 프로젝트 구조
 
 ```
